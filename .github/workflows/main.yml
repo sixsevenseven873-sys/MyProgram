@@ -22,7 +22,7 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force package-input
           Copy-Item MyProgram.jar package-input/
-          Copy-Item gpc_shl_database.dat package-input/
+          Copy-Item gpc_shl_database.dst package-input/
 
       - name: Build EXE
         shell: pwsh
@@ -30,13 +30,14 @@ jobs:
           jpackage `
             --type exe `
             --input package-input `
-            --dest dist `
-            --name MyProgram `
             --main-jar MyProgram.jar `
-            --main-class Main
+            --main-class Main `
+            --dest . `
+            --name MyProgram `
+            --icon MyProgram.ico
 
       - name: Upload EXE
         uses: actions/upload-artifact@v4
         with:
-          name: MyProgram-Windows
-          path: dist/*.exe
+          name: MyProgram
+          path: MyProgram.exe
